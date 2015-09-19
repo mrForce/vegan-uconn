@@ -31,6 +31,10 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # Added
+    'core',
+    'food',
+    'locations'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -71,7 +75,7 @@ WSGI_APPLICATION = 'wsgi.application'
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'                                   # default timezone (how data is stored)
-timezone.activate(timezone.get_current_timezone())  # current timezone
+#timezone.activate(timezone.get_current_timezone())  # current timezone
 
 USE_I18N = True
 
