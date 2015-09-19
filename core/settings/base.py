@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import json
 import django.utils.timezone as timezone
 
 BASE_DIR = os.path.abspath(os.path.dirname(os.path.dirname(os.path.dirname((__file__)))))
@@ -21,6 +22,25 @@ BASE_DIR = os.path.abspath(os.path.dirname(os.path.dirname(os.path.dirname((__fi
 
 ALLOWED_HOSTS = []
 
+# JSON-based secrets module
+with open(os.path.join(BASE_DIR, "secrets.json")) as f:
+    secrets = json.loads(f.read())
+
+def get_secret(setting, secrets=secrets):
+    """Get the secret variable or return explicit exception."""
+    try:
+        return secrets[setting]
+    except KeyError:
+        error_msg = "Add {0} to your secrets file.".format(setting)
+        raise ImproperlyConfigured(error_msg)
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = get_secret("SECRET_KEY")
+
+# Fixtures
+FIXTURE_DIRS = (
+    os.path.join(BASE_DIR, "core/fixtures"),
+)
 
 # Application definition
 
