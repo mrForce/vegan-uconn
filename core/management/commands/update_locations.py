@@ -14,11 +14,11 @@ class Command(BaseCommand):
         result = requests.get(nutrition_overview_url)
         soup = BeautifulSoup(result.content, "lxml")
         rows = soup.findAll("tr")
-        dining_units = [link.text.strip() for link in rows[1].findAll("a")]              # 2nd tr (row) in page
-        restaurants_and_cafes = [link.text.strip() for link in rows[3].findAll("a")]     # 4th tr (row) in page
+        dining_units = rows[1].findAll("a")             # 2nd tr (row) in page
+        restaurants_and_cafes = rows[3].findAll("a")    # 4th tr (row) in page
         for d in dining_units:
-            Location.objects.get_or_create(name=d, is_dining_hall=True)
+            Location.objects.get_or_create(name=d.text.strip(), is_dining_hall=True, url=d["href"])
         for r in restaurants_and_cafes:
-            Location.objects.get_or_create(name=r, is_dining_hall=False)
+            Location.objects.get_or_create(name=r.text.strip(), is_dining_hall=False, url=r["href"])
         self.stdout.write(datetime.now().isoformat() +
                           " Successfully updated locations.")
