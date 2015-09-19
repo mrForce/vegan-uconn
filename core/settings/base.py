@@ -12,18 +12,12 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import django.utils.timezone as timezone
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+BASE_DIR = os.path.abspath(os.path.dirname(os.path.dirname(os.path.dirname((__file__)))))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '8b@qr5-ysu^6v55^zkhd7b@46r^fixvwfg!yqr4whkk@47yv07'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -50,12 +44,12 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.security.SecurityMiddleware',
 )
 
-ROOT_URLCONF = 'vegan_uconn.urls'
+ROOT_URLCONF = 'core.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [tuple(os.path.join(BASE_DIR, "core/templates"))],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -68,18 +62,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'vegan_uconn.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/1.8/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+WSGI_APPLICATION = 'wsgi.application'
 
 
 # Internationalization
@@ -87,11 +70,12 @@ DATABASES = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'UTC'                                   # default timezone (how data is stored)
+timezone.activate(timezone.get_current_timezone())  # current timezone
 
 USE_I18N = True
 
-USE_L10N = True
+USE_L10N = False    # don't use localization
 
 USE_TZ = True
 
@@ -100,3 +84,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = 'static/'
