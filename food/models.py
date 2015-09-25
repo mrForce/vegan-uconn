@@ -12,6 +12,9 @@ class Food(models.Model):
         ('Lu', 'Lunch'),
         ('Di', 'Dinner'),
         ('LN', 'Late Night'),
+        ('LD', 'Lunch & Dinner'),
+        ('TM', 'Today\'s Menu'),
+        ('No', 'None!')
     )
     date = models.DateField()
     meal = models.CharField(max_length=2, choices=MEAL_TIME_CHOICES, default="Br")
