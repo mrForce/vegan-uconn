@@ -23,8 +23,6 @@ class Location(models.Model):
 #     weekday = models.IntegerField(choices=WEEKDAYS)     # used on normal days
 #     breakfast_from  = models.TimeField()
 #     breakfast_to    = models.TimeField()
-#     brunch_from     = models.TimeField()
-#     brunch_to       = models.TimeField()
 #     lunch_from      = models.TimeField()
 #     lunch_to        = models.TimeField()
 #     dinner_from     = models.TimeField()
