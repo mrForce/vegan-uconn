@@ -37,11 +37,6 @@ def get_secret(setting, secrets=secrets):
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = get_secret("SECRET_KEY")
 
-# Fixtures
-FIXTURE_DIRS = (
-    os.path.join(BASE_DIR, "core/fixtures"),
-)
-
 # Application definition
 
 INSTALLED_APPS = (
