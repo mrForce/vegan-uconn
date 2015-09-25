@@ -19,3 +19,4 @@ class Food(models.Model):
     date = models.DateField()
     meal = models.CharField(max_length=2, choices=MEAL_TIME_CHOICES, default="Br")
     location = models.ForeignKey(Location)
+    price = models.CharField(max_length=20, null=True, blank=True)
