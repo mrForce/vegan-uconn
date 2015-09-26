@@ -45,7 +45,6 @@ class Command(BaseCommand):
                     # this tr is a description, don't store it
                     pass
                 else:
-                    print(dish.find_all("div", class_="shortmenurecipes")[0].string)
                     dish_name = dish.find_all("div", class_="shortmenurecipes")[0].string
                     # it's a dish, so check if it's vegan & check for allergens
                     is_vegan = False
@@ -75,9 +74,7 @@ class Command(BaseCommand):
         for location in Location.objects.all():
             result = requests.get(location.url)
             soup = BeautifulSoup(result.content, "lxml")
-            print("Updating " + location.name + "...")
             self.update_tables(self, soup, location)
-            print("Done with " + location.name + ".")
 
 
         self.stdout.write(datetime.now().isoformat() +
