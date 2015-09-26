@@ -1,0 +1,24 @@
+South Campus Marketplace; 41.804534; -72.247965
+Northwest Marketplace; 41.811230; -72.259523
+North Campus Dining Hall; 41.811970; -72.258222
+Gelfenbien Commons & Halal; 41.813449; -72.254072
+Putnam Dining Hall; 41.805103; -72.258940
+McMahon Dining Hall; 41.803793; -72.252438
+Buckley Dining Hall; 41.805765; -72.244057
+Whitney Dining Hall; 41.809841; -72.247538
+Kosher Kitchen in Gelfenbien Commons; 41.813449; -72.254072
+Chuck & Augie's… A Gathering Place; 41.807223; -72.254789
+Union Street Market; 41.807223; -72.254789
+One Plate, Two Plates; 41.807223; -72.254789
+Food For Thought; 41.807231; -72.252669
+Freshens; 41.807223; -72.254789
+Le Petit Marche; 41.804923; -72.243237
+The Beanery; 41.808403; -72.252987
+Cafe Coop; 41.804948; -72.253502
+UC Cafes - Bookworms; 41.806976; -72.251734
+UC Cafes - Up & Atom; 41.809886; -72.256639
+UC Cafes - Wilbur's; 41.809178; -72.251799
+UC Cafes - Chem Cafe; 41.810736; -72.253742
+UC Cafes - Lu's; 41.808663; -72.248940
+UConn Dairy Bar; 41.813150; -72.249424
+The Blue Cow; 41.807223; -72.254789

@@ -20,5 +20,17 @@ class Command(BaseCommand):
             Location.objects.get_or_create(name=d.text.strip(), is_dining_hall=True, url=d["href"])
         for r in restaurants_and_cafes:
             Location.objects.get_or_create(name=r.text.strip(), is_dining_hall=False, url=r["href"])
+        with open("locations.txt") as f:
+            i = 1
+            for line in f:
+                line = line.split("; ")
+                print("Updating " + line[0] + "...")
+                e = Location.objects.get(id=i)
+                print("In DB: " + e.name)
+                e.latitude = line[1]
+                e.longitude = line[2]
+                e.save()
+                i += 1
+
         self.stdout.write(datetime.now().isoformat() +
                           " Successfully updated locations.")
