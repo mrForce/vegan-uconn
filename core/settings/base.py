@@ -89,14 +89,13 @@ WSGI_APPLICATION = 'wsgi.application'
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'                                   # default timezone (how data is stored)
-#timezone.activate(timezone.get_current_timezone())  # current timezone
+TIME_ZONE = None
 
 USE_I18N = True
 
 USE_L10N = False    # don't use localization
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
