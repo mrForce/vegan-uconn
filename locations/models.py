@@ -8,24 +8,24 @@ class Location(models.Model):
     longitude = models.DecimalField(max_digits=7, decimal_places=4, null=True, blank=True)
     url = models.URLField(max_length=300)
 
-# class OpeningHours(models.Model):
-#     WEEKDAYS = [
-#         (1, _("Monday")),
-#         (2, _("Tuesday")),
-#         (3, _("Wednesday")),
-#         (4, _("Thursday")),
-#         (5, _("Friday")),
-#         (6, _("Saturday")),
-#         (7, _("Sunday")),
-#     ]
-#     location = models.ForeignKey(Location)
-#     date = models.DateField(blank=True)                 # only fill this for special days, e.g. holidays
-#     weekday = models.IntegerField(choices=WEEKDAYS)     # used on normal days
-#     breakfast_from  = models.TimeField()
-#     breakfast_to    = models.TimeField()
-#     lunch_from      = models.TimeField()
-#     lunch_to        = models.TimeField()
-#     dinner_from     = models.TimeField()
-#     dinner_to       = models.TimeField()
-#     late_night_from = models.TimeField()
-#     late_night_to   = models.TimeField()
+class OpeningHours(models.Model):
+    WEEKDAYS = [
+        (1, "Monday"),
+        (2, "Tuesday"),
+        (3, "Wednesday"),
+        (4, "Thursday"),
+        (5, "Friday"),
+        (6, "Saturday"),
+        (7, "Sunday")
+    ]
+    location = models.ForeignKey(Location)
+    date = models.DateField(blank=True, null=True)      # only fill this for special days, e.g. holidays
+    weekday = models.IntegerField(choices=WEEKDAYS)     # used on normal days
+    breakfast_from  = models.TimeField(blank=True, null=True)
+    breakfast_to    = models.TimeField(blank=True, null=True)
+    lunch_from      = models.TimeField(blank=True, null=True)
+    lunch_to        = models.TimeField(blank=True, null=True)
+    dinner_from     = models.TimeField(blank=True, null=True)
+    dinner_to       = models.TimeField(blank=True, null=True)
+    late_night_from = models.TimeField(blank=True, null=True)
+    late_night_to   = models.TimeField(blank=True, null=True)
