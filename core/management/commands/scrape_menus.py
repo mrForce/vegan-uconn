@@ -75,6 +75,7 @@ class Command(BaseCommand):
             result = requests.get(location.url)
             soup = BeautifulSoup(result.content, "lxml")
             self.update_tables(self, soup, location)
+            self.stdout.write("Updated menu for " + location.name + ".")
 
 
         self.stdout.write(datetime.now().isoformat() +
