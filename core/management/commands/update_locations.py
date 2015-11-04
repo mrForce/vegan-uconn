@@ -6,6 +6,7 @@ from datetime import datetime
 
 from locations.models import Location
 
+
 class Command(BaseCommand):
     help = "Updates the dining locations (but doesn't add or change existing \
             lat/long info."

@@ -37,32 +37,47 @@ class Command(BaseCommand):
                 .find_all("tr", recursive=False)
             for dish in menu:
                 if dish.find_all("div", class_="shortmenucats"):
-                    # it's not a dish, it's the category of the following dishes
+                    # not a dish, it's the category of the following dishes
                     category = dish.find_all("div", class_="shortmenucats")[0]\
                         .string.strip("- ").title()
-                    # Late night is stored under Dinner, making things a bit more difficult!
+                    # Late night is stored under Dinner,
+                    # making things a bit more difficult!
                     if (category == "Late Night Grill") or \
                        (category == "Late Night"):
                         meal_name = "LN"
                 elif dish.find_all("div", class_="shortmenuproddesc"):
-                    # this tr is a description, don't store it
-                    pass
+                    # this tr is a description of the previous dish
+                    # use join() because some descriptions are lines with
+                    # <br>s between them.
+                    description = " ".join(dish.find_all("div",
+                                           class_="shortmenuproddesc")[0]
+                                           .find_all(text=True))
+                    # don't save descriptions about nutrition info
+                    if ("nutrition" not in description and
+                            "portion" not in description):
+                        latest = Food.objects.latest("id")
+                        latest.description = description
+                        if "vegan" in description:
+                            latest.is_vegan = True
+                        latest.save()
                 else:
                     dish_name = dish.find_all("div",
-                        class_="shortmenurecipes")[0].string
+                                              class_="shortmenurecipes")[0]\
+                                              .string
                     # it's a dish, so check if it's vegan & check for allergens
                     is_vegan = False
                     is_gluten_free = False
                     contains_nuts = False
                     try:
                         price = dish.find("div",
-                            class_="shortmenuprices").find("span")\
-                                                     .string.strip("$")
+                                          class_="shortmenuprices")\
+                                          .find("span").string.strip("$")
                     except:
                         price = ""
                     if dish.find_all("img", {"src": "LegendImages/vegan.gif"}):
                         is_vegan = True
-                    if dish.find_all("img", {"src": "LegendImages/glutenfree.gif"}):
+                    if dish.find_all("img",
+                                     {"src": "LegendImages/glutenfree.gif"}):
                         is_gluten_free = True
                     if dish.find_all("img", {"src": "LegendImages/nuts.gif"}):
                         contains_nuts = True
@@ -82,7 +97,6 @@ class Command(BaseCommand):
             soup = BeautifulSoup(result.content, "lxml")
             self.update_tables(self, soup, location)
             self.stdout.write("Updated menu for " + location.name + ".")
-
 
         self.stdout.write(datetime.now().isoformat() +
                           " Successfully collected menus.")

@@ -30,7 +30,7 @@
                     <div class="col-xs-12">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                {% with categories_list|first as location_name %}{{ location_name }}{% endwith %}
+                                {% with categories_list|first as location_name %}{{ location_name|first }} {{ location_name|slice:"1:2" }}{% endwith %}
                             </div>
                             <div class="panel-body">
                                 <ul class="list-group">
@@ -41,14 +41,17 @@
                                             </b>
                                         </li>
                                         {% for food in foods_list|slice:"1:" %}
-                                            <li class="list-group-item">
+                                            <li class="list-group-item dish">
                                                 {% if food.is_gluten_free %}
-                                                    <span class="badge">Gluten free</span>
+                                                    <span class="badge">GF</span>
                                                 {% endif %}
                                                 {% if food.contains_nuts %}
                                                     <span class="badge">Contains nuts</span>
                                                 {% endif %}
                                                 {{ food }}
+                                                {% if food.description %}
+                                                    <br /><span class="description">{{ food.description }}</span>
+                                                {% endif %}
                                             </li>
                                         {% endfor %}
                                     {% endfor %}
