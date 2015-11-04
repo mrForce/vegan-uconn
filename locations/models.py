@@ -21,6 +21,9 @@ class Location(models.Model):
         else:
             return False
 
+    def __str__(self):
+        return self.name
+
 
 class OpeningHours(models.Model):
     WEEKDAYS = [
