@@ -1,0 +1,66 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Vegan UConn</title>
+        <!-- Bootstrap -->
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <!-- Ensure proper rendering on mobile devices, and disable zooming -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+        <link rel="stylesheet" type="text/css" href="{% static "css/style.css" %}">
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="page-header">
+                        <img id="husky-logo" alt="logo" src="{% static "img/logo.png" %}" height="100px">
+                        <h1>Vegan UConn <small>{{ now }} - {{ current_meal }}</small></h1>
+                    </div>
+                </div>
+            </div>
+            {% for location_name, categories_dict in locations_dict.items %}
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                {{ location_name }}
+                            </div>
+                            <div class="panel-body">
+                                <ul class="list-group">
+                                    {% for category_name, foods_list in categories_dict.items %}
+                                        <li class="list-group-item">
+                                            <b>
+                                                {{ category_name }}
+                                            </b>
+                                        </li>
+                                        {% for food in foods_list %}
+                                            <li class="list-group-item">
+                                                {% if food.is_gluten_free %}
+                                                    <span class="badge">Gluten free</span>
+                                                {% endif %}
+                                                {% if food.contains_nuts %}
+                                                    <span class="badge">Contains nuts</span>
+                                                {% endif %}
+                                                {{ food }}
+                                            </li>
+                                        {% endfor %}
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% for i in categories %}
+            {{ i }}<br />
+        {% endfor %}
+        </div>
+    </body>
+</html>
