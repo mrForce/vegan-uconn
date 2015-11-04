@@ -7,13 +7,17 @@ def current_meal_type():
     weekday = datetime.now().isoweekday()
     hours = OpeningHours.objects.filter(weekday=weekday)
     for entry in hours:
-        if entry.breakfast_from and entry.breakfast_to and (entry.breakfast_from < now < entry.breakfast_to):
+        if entry.breakfast_from and entry.breakfast_to and \
+            (entry.breakfast_from < now < entry.breakfast_to):
             return "Br"
-        elif entry.lunch_from and entry.lunch_to and (entry.lunch_from < now < entry.lunch_to):
+        elif entry.lunch_from and entry.lunch_to and \
+            (entry.lunch_from < now < entry.lunch_to):
             return "Lu"
-        elif entry.dinner_from and entry.dinner_to and (entry.dinner_from < now < entry.dinner_to):
+        elif entry.dinner_from and entry.dinner_to and \
+            (entry.dinner_from < now < entry.dinner_to):
             return "Di"
-        elif entry.late_night_from and entry.late_night_to and (entry.late_night_from < now < entry.late_night_to):
+        elif entry.late_night_from and entry.late_night_to and \
+            (entry.late_night_from < now < entry.late_night_to):
             return "LN"
     return "No"
 

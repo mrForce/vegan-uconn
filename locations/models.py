@@ -6,13 +6,16 @@ class Location(models.Model):
     name = models.CharField(max_length=100)
     is_dining_hall = models.BooleanField(blank=False, default=False)
     # 4 decimal places = ~10m accuracy at the equator (worst case)
-    latitude = models.DecimalField(max_digits=7, decimal_places=4, null=True, blank=True)
-    longitude = models.DecimalField(max_digits=7, decimal_places=4, null=True, blank=True)
+    latitude = models.DecimalField(max_digits=7, decimal_places=4, null=True,
+                                   blank=True)
+    longitude = models.DecimalField(max_digits=7, decimal_places=4, null=True,
+                                    blank=True)
     url = models.URLField(max_length=300)
 
     def open_now(self):
         now = datetime.now()
-        hours = OpeningHours.objects.filter(location=self, weekday=now.isoweekday())
+        hours = OpeningHours.objects.filter(location=self,
+                                            weekday=now.isoweekday())
         if (hours.breakfast_from < now.time() < hours.breakfast_to) or \
            (hours.lunch_from < now.time() < hours.lunch_to) or \
            (hours.dinner_from < now.time() < hours.dinner_to) or \
@@ -36,8 +39,10 @@ class OpeningHours(models.Model):
         (7, "Sunday")
     ]
     location = models.ForeignKey(Location)
-    date = models.DateField(blank=True, null=True)      # only fill this for special days, e.g. holidays
-    weekday = models.IntegerField(choices=WEEKDAYS)     # used on normal days
+    # only fill the date field for special days, e.g. holidays
+    date = models.DateField(blank=True, null=True)
+    # this field is used on normal days (the date field is empty)
+    weekday = models.IntegerField(choices=WEEKDAYS)
     breakfast_from  = models.TimeField(blank=True, null=True)
     breakfast_to    = models.TimeField(blank=True, null=True)
     lunch_from      = models.TimeField(blank=True, null=True)

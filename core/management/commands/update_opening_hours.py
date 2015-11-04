@@ -28,18 +28,26 @@ class Command(BaseCommand):
                                             dinner_from     = time(16, 30),
                                             dinner_to       = time(19, 15))
             # late night
-            if (d.name == "Whitney Dining Hall") or (d.name == "McMahon Dining Hall") or (d.name == "Northwest Marketplace"):
+            if (d.name == "Whitney Dining Hall") or \
+               (d.name == "McMahon Dining Hall") or \
+               (d.name == "Northwest Marketplace"):
                 for i in [1, 2, 3, 4, 7]:  # not fri or sat
                     OpeningHours.objects.update_or_create(location=d,
                                                           weekday=i,
-                                                          defaults={"late_night_from": time(19, 15), "late_night_to": time(22)})
+                                                          defaults={
+                                                            "late_night_from": time(19, 15),
+                                                            "late_night_to": time(22)})
             if (d.name == "South Campus Marketplace"):
                 OpeningHours.objects.update_or_create(location=d,
                                                       weekday=6,
-                                                      defaults={"breakfast_from": time(7), "breakfast_to": time(9, 30)})
+                                                      defaults={
+                                                        "breakfast_from": time(7),
+                                                        "breakfast_to": time(9, 30)})
                 OpeningHours.objects.update_or_create(location=d,
                                                       weekday=7,
-                                                      defaults={"breakfast_from": time(7), "breakfast_to": time(9, 30)})
+                                                      defaults={
+                                                        "breakfast_from": time(7),
+                                                        "breakfast_to": time(9, 30)})
 
         self.stdout.write(datetime.now().isoformat() +
                           " Successfully updated opening hours.")

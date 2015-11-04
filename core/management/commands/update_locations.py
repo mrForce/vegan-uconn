@@ -7,7 +7,8 @@ from datetime import datetime
 from locations.models import Location
 
 class Command(BaseCommand):
-    help = "Updates the dining locations (but doesn't add or change existing lat/long info."
+    help = "Updates the dining locations (but doesn't add or change existing \
+            lat/long info."
 
     def handle(self, *args, **kwargs):
         nutrition_overview_url = "http://dining.uconn.edu/nutrition/"
@@ -17,9 +18,11 @@ class Command(BaseCommand):
         dining_units = rows[1].findAll("a")             # 2nd tr (row) in page
         restaurants_and_cafes = rows[3].findAll("a")    # 4th tr (row) in page
         for d in dining_units:
-            Location.objects.get_or_create(name=d.text.strip(), is_dining_hall=True, url=d["href"])
+            Location.objects.get_or_create(name=d.text.strip(),
+                                           is_dining_hall=True, url=d["href"])
         for r in restaurants_and_cafes:
-            Location.objects.get_or_create(name=r.text.strip(), is_dining_hall=False, url=r["href"])
+            Location.objects.get_or_create(name=r.text.strip(),
+                                           is_dining_hall=False, url=r["href"])
         with open("locations.txt") as f:
             i = 1
             for line in f:
