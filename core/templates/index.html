@@ -25,22 +25,22 @@
                     </div>
                 </div>
             </div>
-            {% for location_name, categories_dict in locations_dict.items %}
+            {% for categories_list in locations_list %}
                 <div class="row">
                     <div class="col-xs-12">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                {{ location_name }}
+                                {% with categories_list|first as location_name %}{{ location_name }}{% endwith %}
                             </div>
                             <div class="panel-body">
                                 <ul class="list-group">
-                                    {% for category_name, foods_list in categories_dict.items %}
+                                    {% for foods_list in categories_list|slice:"1:" %}
                                         <li class="list-group-item">
                                             <b>
-                                                {{ category_name }}
+                                                {% with foods_list|first as category %}{{ category }}{% endwith %}
                                             </b>
                                         </li>
-                                        {% for food in foods_list %}
+                                        {% for food in foods_list|slice:"1:" %}
                                             <li class="list-group-item">
                                                 {% if food.is_gluten_free %}
                                                     <span class="badge">Gluten free</span>
