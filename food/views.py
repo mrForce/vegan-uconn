@@ -26,6 +26,7 @@ def index(request):
     next_meal = next_meal_type()
 
     locations_list = []
+    categories = []
     for l in Location.objects.filter(is_dining_hall=True):
         foods = Food.objects.filter(date=datetime.today())\
                             .filter(meal=current_meal)\
