@@ -35,6 +35,7 @@ class Command(BaseCommand):
             # the menu is the 2nd tr in the meal table
             menu = m.find_all("tr")[0].find_next_sibling("tr").find("table")\
                 .find_all("tr", recursive=False)
+            category = ""
             for dish in menu:
                 if dish.find_all("div", class_="shortmenucats"):
                     # not a dish, it's the category of the following dishes
