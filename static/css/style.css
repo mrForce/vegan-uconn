@@ -1,0 +1,16 @@
+#husky-logo {
+    float: left;
+    height: 45px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+}
+
+.dish {
+    padding-left: 2em;
+}
+
+.description {
+    font-size: 0.9em;
+    font-style: italic;
+    color: rgba(0, 0, 0, 0.7);
+}
