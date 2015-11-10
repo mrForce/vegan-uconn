@@ -1,13 +1,14 @@
-from datetime import datetime
+from datetime import time, datetime, timedelta
 
 from django.shortcuts import render_to_response
+from django.utils import timezone
 
 from locations.models import Location
 from food.models import Food
-from core.utils import current_meal_type, next_meal_type
+from core.utils import current_meal_type, next_meal_type, current_or_next_meal, full_meal_name
 
 
-def index(request):
+def index(request, meal=current_or_next_meal()):
     # TODO: add ability to show non-dining-hall places (cafes etc)
     # TODO: add ability to sort by distance
     # create a list of lists of lists in the format
@@ -22,14 +23,42 @@ def index(request):
     #   ],
     #   etc.
     # ]
-    current_meal = current_meal_type()
-    next_meal = next_meal_type()
 
     locations_list = []
     categories = []
+    weekday = datetime.now().isoweekday()
+    date = datetime.today()
+    tomorrow = date + timedelta(days=1)
+    now = datetime.now().time()
+    # If we passed today's meal, show tomorrow's
+    if weekday in [1, 2, 3, 4]:  # Monday - Thursday
+        if (meal is "Br" and now > time(10, 45)) or \
+           (meal is "Lu" and now > time(14, 15)) or \
+           (meal is "Di" and now > time(19, 15)) or \
+           (meal is "LN" and now > time(22, 00)):
+            date = tomorrow
+    elif weekday is 5:  # Friday
+        if (meal is "Br" and now > time(10, 45)) or \
+           (meal is "Lu" and now > time(14, 15)) or \
+           (meal is "Di" and now > time(19, 15)) or \
+           (meal is "LN" and now > time(19, 15)):  # No late night
+            date = tomorrow
+    elif weekday is 6:  # Saturday
+        if (meal is "Br" and now > time(9, 30)) or \
+           (meal is "Lu" and now > time(16, 15)) or \
+           (meal is "Di" and now > time(19, 15)) or \
+           (meal is "LN" and now > time(19, 15)):  # No late night
+            date = tomorrow
+    else:  # Sunday
+        if (meal is "Br" and now > time(9, 30)) or \
+           (meal is "Lu" and now > time(16, 15)) or \
+           (meal is "Di" and now > time(19, 15)) or \
+           (meal is "LN" and now > time(22, 00)):
+            date = tomorrow
+
     for l in Location.objects.filter(is_dining_hall=True):
-        foods = Food.objects.filter(date=datetime.today())\
-                            .filter(meal=current_meal)\
+        foods = Food.objects.filter(date=date)\
+                            .filter(meal=meal)\
                             .filter(is_vegan=True)\
                             .filter(location=l)
         if foods.count() > 0:
@@ -53,7 +82,8 @@ def index(request):
     locations_list.reverse()
 
     return render_to_response("index.html", {"locations_list": locations_list,
-                                             "current_meal": current_meal,
-                                             "next_meal": next_meal,
-                                             "now": datetime.now(),
+                                             "meal": meal,
+                                             "meal_name": full_meal_name(meal),
+                                             "date": date,
+                                             "now": timezone.now(),
                                              "categories": categories})

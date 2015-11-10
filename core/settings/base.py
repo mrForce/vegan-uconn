@@ -73,7 +73,7 @@ ROOT_URLCONF = 'core.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [tuple(os.path.join(BASE_DIR, "core/templates"))],
+        'DIRS': [os.path.join(BASE_DIR, "core/templates")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -94,13 +94,12 @@ WSGI_APPLICATION = 'wsgi.application'
 
 LANGUAGE_CODE = 'en-us'
 
-#TIME_ZONE = 'UTC'
-
 USE_I18N = True
 
 USE_L10N = False    # don't use localization
 
-USE_TZ = False
+USE_TZ = True
+TIME_ZONE = "US/Eastern"
 
 
 # Static files (CSS, JavaScript, Images)

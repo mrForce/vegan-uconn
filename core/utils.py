@@ -2,24 +2,26 @@ from datetime import time, datetime
 
 from locations.models import OpeningHours
 
+
 def current_meal_type():
     now = datetime.now().time()
     weekday = datetime.now().isoweekday()
     hours = OpeningHours.objects.filter(weekday=weekday)
     for entry in hours:
         if entry.breakfast_from and entry.breakfast_to and \
-            (entry.breakfast_from < now < entry.breakfast_to):
+                (entry.breakfast_from < now < entry.breakfast_to):
             return "Br"
         elif entry.lunch_from and entry.lunch_to and \
-            (entry.lunch_from < now < entry.lunch_to):
+                (entry.lunch_from < now < entry.lunch_to):
             return "Lu"
         elif entry.dinner_from and entry.dinner_to and \
-            (entry.dinner_from < now < entry.dinner_to):
+                (entry.dinner_from < now < entry.dinner_to):
             return "Di"
         elif entry.late_night_from and entry.late_night_to and \
-            (entry.late_night_from < now < entry.late_night_to):
+                (entry.late_night_from < now < entry.late_night_to):
             return "LN"
     return "No"
+
 
 def next_meal_type():
     now = datetime.now().time()
@@ -64,3 +66,18 @@ def next_meal_type():
             return "LN"
         else:
             return "Br"
+
+
+def current_or_next_meal():
+    return current_meal_type() if (current_meal_type() is not "No") \
+        else next_meal_type()
+
+
+def full_meal_name(meal):
+    return {
+        "Br": "Breakfast",
+        "Lu": "Lunch",
+        "Di": "Dinner",
+        "LD": "Lunch & Dinner",
+        "TM": "Today's Menu",
+    }.get(meal, "No current meal")

@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 
 from django.core.management.base import BaseCommand
-from datetime import datetime
+import datetime
 
 from locations.models import Location
 from food.models import Food
@@ -23,8 +23,10 @@ class Command(BaseCommand):
         }.get(meal, "No")
 
     @staticmethod
-    def update_tables(self, soup, location):
-        date = datetime.today()
+    def update_tables(self, soup, location, date):
+        # dishes_before will be used later in the function to make sure that
+        # we remove dishes if they're removed from the online menu
+        dishes_before = Food.objects.filter(location=location, date=date)
         # first, find the meals of the day
         meals = soup.find_all("div", class_="shortmenumeals")
         meals = [m.find_parent("table").find_parent("table") for m in meals]
@@ -46,6 +48,10 @@ class Command(BaseCommand):
                     if (category == "Late Night Grill") or \
                        (category == "Late Night"):
                         meal_name = "LN"
+                    # .title() turns the word "entree's" into "Entree'S", so
+                    # we make it look neater
+                    if category[-2:] is "\'S":
+                        category[-2:] = "\'s"
                 elif dish.find_all("div", class_="shortmenuproddesc"):
                     # this tr is a description of the previous dish
                     # use join() because some descriptions are lines with
@@ -82,22 +88,38 @@ class Command(BaseCommand):
                         is_gluten_free = True
                     if dish.find_all("img", {"src": "LegendImages/nuts.gif"}):
                         contains_nuts = True
-                    Food.objects.create(name=dish_name,
-                                        category=category,
-                                        is_vegan=is_vegan,
-                                        is_gluten_free=is_gluten_free,
-                                        contains_nuts=contains_nuts,
-                                        date=date,
-                                        meal=meal_name,
-                                        location=location,
-                                        price=price)
+
+                    Food.objects.get_or_create(name=dish_name,
+                                               category=category,
+                                               is_vegan=is_vegan,
+                                               is_gluten_free=is_gluten_free,
+                                               contains_nuts=contains_nuts,
+                                               date=date,
+                                               meal=meal_name,
+                                               location=location,
+                                               price=price)
+        # Don't save dishes that have been removed
+        dishes_now = Food.objects.filter(location=location, date=date)
+        for d in dishes_before:
+            if d not in dishes_now:
+                Food.objects.get(pk=d.pk).delete()
 
     def handle(self, *args, **kwargs):
         for location in Location.objects.all():
+            # scrape today's menus
+            date = datetime.date.today()
             result = requests.get(location.url)
             soup = BeautifulSoup(result.content, "lxml")
-            self.update_tables(self, soup, location)
-            self.stdout.write("Updated menu for " + location.name + ".")
+            self.update_tables(self, soup, location, date)
+            self.stdout.write("Updated today's menu for " + location.name + ".")
+            # scrape tomorrow's menu
+            date = datetime.date.today() + datetime.timedelta(days=1)
+            time = "&dtdate=" + str(date.month) + "%2F" + str(date.day) + \
+                "%2F" + str(date.year)
+            result = requests.get(location.url + time)
+            soup = BeautifulSoup(result.content, "lxml")
+            self.update_tables(self, soup, location, date)
+            self.stdout.write("Updated tomorrow's menu for " + location.name + ".")
 
-        self.stdout.write(datetime.now().isoformat() +
-                          " Successfully collected menus.")
+        self.stdout.write(datetime.datetime.now().isoformat() +
+                          " Successfully updated menus.")

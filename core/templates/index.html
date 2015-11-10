@@ -21,7 +21,7 @@
                 <div class="col-xs-12">
                     <div class="page-header">
                         <img id="husky-logo" alt="logo" src="{% static "img/logo.png" %}" height="100px">
-                        <h1>Vegan UConn <small>{{ now }} - {{ current_meal }}</small></h1>
+                        <h1>Vegan UConn <small>{{ meal_name }}</small></h1>
                     </div>
                 </div>
             </div>
@@ -30,7 +30,7 @@
                     <div class="col-xs-12">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                {% with categories_list|first as location_name %}{{ location_name|first }} {{ location_name|slice:"1:2" }}{% endwith %}
+                                {% with categories_list|first as location_name %}{{ location_name|first }}{% endwith %}
                             </div>
                             <div class="panel-body">
                                 <ul class="list-group">
