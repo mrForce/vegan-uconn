@@ -85,5 +85,4 @@ def index(request, meal=current_or_next_meal()):
                                              "meal": meal,
                                              "meal_name": full_meal_name(meal),
                                              "date": date,
-                                             "now": timezone.now(),
                                              "categories": categories})
