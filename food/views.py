@@ -84,5 +84,5 @@ def index(request, meal=current_or_next_meal()):
     return render_to_response("index.html", {"locations_list": locations_list,
                                              "meal": meal,
                                              "meal_name": full_meal_name(meal),
-                                             "date": date,
+                                             "date": date.date(),
                                              "categories": categories})
