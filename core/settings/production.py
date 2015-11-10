@@ -6,7 +6,7 @@ DATABASES = {
         'NAME': 'veganuconn',
         'USER': 'veganuconn',
         'PASSWORD': get_secret("DATABASE_PASSWORD"),
-        'HOST': 'localhost',
+        'HOST': '127.0.0.1',
         'PORT': '',
     }
 }
