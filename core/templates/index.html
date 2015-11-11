@@ -14,13 +14,13 @@
         <link rel="stylesheet" type="text/css" href="{% static "css/cosmo-theme.css" %}">
     </head>
     <body>
-        <div id="wrapper" class="toggled">
+        <div id="wrapper">
             <!-- Sidebar -->
             <div id="sidebar-wrapper">
                 <ul class="sidebar-nav">
+                    <img id="husky-logo" alt="logo" src="{% static "img/logo.png" %}">
                     <li class="sidebar-brand">
                         <a href="#">Vegan UConn</a>
-                        <img id="husky-logo" alt="logo" src="{% static "img/logo.png" %}">
                     </li>
                     <li>
                         <a href="#">Item one</a>
@@ -33,19 +33,12 @@
                     </li>
                 </ul>
             </div> <!-- /#sidebar-wrapper -->
-            <nav class="navbar navbar-default">
-                <div class="container">
-                    <div class="navbar-header">
-                        <a class="navbar-brand" href="#">
-                            Vegan UConn - {{ meal_name }} of {{ date }}
-                        </a>
-                    </div> <!-- /.navbar-header -->
-                </div> <!-- /.container -->
-            </nav>
             <div id="page-content-wrapper">
-                <button type="button" aria-label="Toggle Navigation" class="lines-button x">
-                    <span class="lines"></span>
-                </button>
+                <div class="lines-button-wrapper">
+                    <button type="button" aria-label="Toggle Navigation" class="lines-button x">
+                        <span class="lines"></span>
+                    </button>
+                </div>
                 <div class="container">
                     {% for categories_list in locations_list %}
                         <div class="row">
@@ -95,19 +88,20 @@
             $(this).toggleClass("open");
             setTimeout(function(){
                 $("#wrapper").toggleClass("toggled");
-                $(".lines-button").toggleClass("button-sidebar-open");
             }, 300);
         });
+        $(window).scroll(function(e) {
+            var scroll = $(window).scrollTop();
+            $(".lines-button-wrapper").css({"top": scroll + "px"});
+        });
         $(document).ready(function() {
-            $(window).scroll(function() {
-                var distanceFromTop = $(document).scrollTop();
-                if (distanceFromTop >= $(".navbar").height()) {
-                    $(".lines-button").addClass("fixed");
-                }
-                else {
-                    $(".lines-button").removeClass("fixed");
-                }
-                });
+            if ($(window).width() < 768) {
+                // make room for the menu button
+                $(".container").css({"padding-left": "60px"});
+            } else {
+                // hide the menu button
+                $(".lines-button-wrapper").remove();
+            }
         });
         </script>
     </body>

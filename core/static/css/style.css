@@ -3,10 +3,9 @@ body {
 }
 
 #husky-logo {
-    float: left;
-    height: 45px;
-    margin-bottom: 10px;
-    margin-right: 10px;
+    width: 100px;
+    margin-left: 75px;
+    margin-top: 20px;
 }
 
 .dish {
@@ -19,25 +18,20 @@ body {
     color: rgba(0, 0, 0, 0.7);
 }
 
-.fixed {
-    top: 7px !important;
-}
-
-.button-sidebar-open {
-    left: 257px !important;
-}
-
 /* "Hamburger" menu */
+
+.lines-button-wrapper {
+    position: relative;
+    transition: 0.1s;
+    z-index: 5;
+}
+
 .lines-button {
   transition: .3s;
   cursor: pointer;
   user-select: none;
   background: transparent;
   border: none !important;
-  z-index: 5;
-  position: fixed;
-  top: 57px;
-  left: 7px;
 }
 .lines-button:active {
   transition: 0;
