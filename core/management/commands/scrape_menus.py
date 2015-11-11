@@ -105,13 +105,14 @@ class Command(BaseCommand):
                 Food.objects.get(pk=d.pk).delete()
 
     def handle(self, *args, **kwargs):
+        count = Location.objects.count()
+        done = 0
         for location in Location.objects.all():
             # scrape today's menus
             date = datetime.date.today()
             result = requests.get(location.url)
             soup = BeautifulSoup(result.content, "lxml")
             self.update_tables(self, soup, location, date)
-            self.stdout.write("Updated today's menu for " + location.name + ".")
             # scrape tomorrow's menu
             date = datetime.date.today() + datetime.timedelta(days=1)
             time = "&dtdate=" + str(date.month) + "%2F" + str(date.day) + \
@@ -119,7 +120,9 @@ class Command(BaseCommand):
             result = requests.get(location.url + time)
             soup = BeautifulSoup(result.content, "lxml")
             self.update_tables(self, soup, location, date)
-            self.stdout.write("Updated tomorrow's menu for " + location.name + ".")
-
+            out = done*"-" + (count-done)*"."
+            print(out, end="\r")
+            done += 1
+        self.stdout.write("\n")
         self.stdout.write(datetime.datetime.now().isoformat() +
                           " Successfully updated menus.")

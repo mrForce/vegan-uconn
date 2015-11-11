@@ -6,61 +6,109 @@
         <!-- Bootstrap -->
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-        <!-- Optional theme -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-        <!-- Latest compiled and minified JavaScript -->
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
         <!-- Ensure proper rendering on mobile devices, and disable zooming -->
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
         <link rel="stylesheet" type="text/css" href="{% static "css/style.css" %}">
+        <link rel="stylesheet" type="text/css" href="{% static "css/simple-sidebar.css" %}">
+        <link rel="stylesheet" type="text/css" href="{% static "css/cosmo-theme.css" %}">
     </head>
     <body>
-        <div class="container">
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="page-header">
-                        <img id="husky-logo" alt="logo" src="{% static "img/logo.png" %}" height="100px">
-                        <h1>Vegan UConn <small>{{ meal_name }} of {{ date }}</small></h1>
-                    </div>
-                </div>
-            </div>
-            {% for categories_list in locations_list %}
-                <div class="row">
-                    <div class="col-xs-12">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                {% with categories_list|first as location_name %}{{ location_name|first }}{% endwith %}
+        <div id="wrapper" class="toggled">
+            <!-- Sidebar -->
+            <div id="sidebar-wrapper">
+                <ul class="sidebar-nav">
+                    <li class="sidebar-brand">
+                        <a href="#">Vegan UConn</a>
+                        <img id="husky-logo" alt="logo" src="{% static "img/logo.png" %}">
+                    </li>
+                    <li>
+                        <a href="#">Item one</a>
+                    </li>
+                    <li>
+                        <a href="#">Item two</a>
+                    </li>
+                    <li>
+                        <a href="#">Item three</a>
+                    </li>
+                </ul>
+            </div> <!-- /#sidebar-wrapper -->
+            <nav class="navbar navbar-default">
+                <div class="container">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="#">
+                            Vegan UConn - {{ meal_name }} of {{ date }}
+                        </a>
+                    </div> <!-- /.navbar-header -->
+                </div> <!-- /.container -->
+            </nav>
+            <div id="page-content-wrapper">
+                <button type="button" aria-label="Toggle Navigation" class="lines-button x">
+                    <span class="lines"></span>
+                </button>
+                <div class="container">
+                    {% for categories_list in locations_list %}
+                        <div class="row">
+                            <div class="col-sm-12 col-md-8 col-md-offset-2">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        {% with categories_list|first as location_name %}{{ location_name|first }}{% endwith %}
+                                    </div>
+                                    <div class="panel-body">
+                                        <ul class="list-group">
+                                            {% for foods_list in categories_list|slice:"1:" %}
+                                                <li class="list-group-item">
+                                                    <b>
+                                                        {% with foods_list|first as category %}{{ category }}{% endwith %}
+                                                    </b>
+                                                </li>
+                                                {% for food in foods_list|slice:"1:" %}
+                                                    <li class="list-group-item dish">
+                                                        {% if food.is_gluten_free %}
+                                                            <span class="badge">GF</span>
+                                                        {% endif %}
+                                                        {% if food.contains_nuts %}
+                                                            <span class="badge">Contains nuts</span>
+                                                        {% endif %}
+                                                        {{ food }}
+                                                        {% if food.description %}
+                                                            <br /><span class="description">{{ food.description }}</span>
+                                                        {% endif %}
+                                                    </li>
+                                                {% endfor %}
+                                            {% endfor %}
+                                        </ul>
+                                    </div> <!-- /.panel-body -->
+                                </div> <!-- /.panel -->
                             </div>
-                            <div class="panel-body">
-                                <ul class="list-group">
-                                    {% for foods_list in categories_list|slice:"1:" %}
-                                        <li class="list-group-item">
-                                            <b>
-                                                {% with foods_list|first as category %}{{ category }}{% endwith %}
-                                            </b>
-                                        </li>
-                                        {% for food in foods_list|slice:"1:" %}
-                                            <li class="list-group-item dish">
-                                                {% if food.is_gluten_free %}
-                                                    <span class="badge">GF</span>
-                                                {% endif %}
-                                                {% if food.contains_nuts %}
-                                                    <span class="badge">Contains nuts</span>
-                                                {% endif %}
-                                                {{ food }}
-                                                {% if food.description %}
-                                                    <br /><span class="description">{{ food.description }}</span>
-                                                {% endif %}
-                                            </li>
-                                        {% endfor %}
-                                    {% endfor %}
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
+                        </div> <!-- /.row -->
+                    {% endfor %}
+                </div> <!-- /.container -->
+            </div> <!-- /#page-content-wrapper -->
+        </div> <!-- /#wrapper -->
+
+        <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <script>
+        $(".lines-button").click(function(e) {
+            e.preventDefault();
+            $(this).toggleClass("open");
+            setTimeout(function(){
+                $("#wrapper").toggleClass("toggled");
+                $(".lines-button").toggleClass("button-sidebar-open");
+            }, 300);
+        });
+        $(document).ready(function() {
+            $(window).scroll(function() {
+                var distanceFromTop = $(document).scrollTop();
+                if (distanceFromTop >= $(".navbar").height()) {
+                    $(".lines-button").addClass("fixed");
+                }
+                else {
+                    $(".lines-button").removeClass("fixed");
+                }
+                });
+        });
+        </script>
     </body>
 </html>

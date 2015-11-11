@@ -1,3 +1,7 @@
+body {
+    margin: 0;
+}
+
 #husky-logo {
     float: left;
     height: 45px;
@@ -13,4 +17,73 @@
     font-size: 0.9em;
     font-style: italic;
     color: rgba(0, 0, 0, 0.7);
+}
+
+.fixed {
+    top: 7px !important;
+}
+
+.button-sidebar-open {
+    left: 257px !important;
+}
+
+/* "Hamburger" menu */
+.lines-button {
+  transition: .3s;
+  cursor: pointer;
+  user-select: none;
+  background: transparent;
+  border: none !important;
+  z-index: 5;
+  position: fixed;
+  top: 57px;
+  left: 7px;
+}
+.lines-button:active {
+  transition: 0;
+}
+.lines {
+  display: inline-block;
+  width: 3rem;
+  height: 0.15em;
+  background: black;
+  transition: 0.3s;
+  position: relative;
+}
+.lines:before, .lines:after {
+  display: inline-block;
+  width: 3rem;
+  height: 0.15em;
+  background: black;
+  transition: 0.3s;
+  position: absolute;
+  left: 0;
+  content: '';
+}
+.lines:before {
+  top: 0.8rem;
+}
+.lines:after {
+  top: -0.8rem;
+}
+.lines-button.open {
+  -webkit-transform: scale3d(0.8, 0.8, 0.8);
+  transform: scale3d(0.8, 0.8, 0.8);
+}
+.lines-button.x.open .lines {
+  background: transparent;
+}
+.lines-button.x.open .lines:before, .lines-button.x.open .lines:after {
+  -webkit-transform-origin: 50% 50%;
+  transform-origin: 50% 50%;
+  top: 0;
+  width: 4rem;
+}
+.lines-button.x.open .lines:before {
+  -webkit-transform: rotate3d(0, 0, 1, 45deg);
+  transform: rotate3d(0, 0, 1, 45deg);
+}
+.lines-button.x.open .lines:after {
+  -webkit-transform: rotate3d(0, 0, 1, -45deg);
+  transform: rotate3d(0, 0, 1, -45deg);
 }
