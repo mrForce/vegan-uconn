@@ -7,25 +7,87 @@ body {
     margin-left: 75px;
     margin-top: 20px;
 }
-
-.dish {
-    padding-left: 2em;
+#sidebar-name {
+    color: white;
+    margin-bottom: 40px;
 }
-
+.sidebar-nav > form {
+    margin-bottom: 30px;
+}
+.sidebar-form-entry {
+    line-height: normal !important;
+}
+.dish {
+    padding-left: 2em !important;
+}
 .description {
     font-size: 0.9em;
     font-style: italic;
     color: rgba(0, 0, 0, 0.7);
 }
+.sidebar-nav .btn {
+    color: #cccccc;
+    border: 2px solid #333333;
+}
+.sidebar-nav .btn:hover {
+    border: 2px solid #999999;
+    background-color: #222222;
+}
+.sidebar-form-select {
+    width: 80% !important;
+    height: auto !important;
+    margin: 5px auto;
+}
+
+/* Custom checkboxes for menu */
+.checkbox-custom, .radio-custom {
+    opacity: 0;
+    position: absolute;
+}
+.checkbox-custom, .checkbox-custom-label, .radio-custom, .radio-custom-label {
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
+}
+.checkbox-custom-label, .radio-custom-label {
+    position: relative;
+    color: #cccccc;
+}
+.checkbox-custom + .checkbox-custom-label:before, .radio-custom + .radio-custom-label:before {
+    content: '';
+    background: #ddd;
+    border: 2px solid #999999;
+    display: inline-block;
+    vertical-align: middle;
+    width: 15px;
+    height: 15px;
+    padding: 0px;
+    margin-right: 10px;
+    text-align: center;
+}
+.checkbox-custom:checked + .checkbox-custom-label:before {
+    content: "\f00c";
+    background: #2780e3;
+    color: #fff;
+}
+.radio-custom + .radio-custom-label:before {
+    border-radius: 50%;
+}
+.radio-custom:checked + .radio-custom-label:before {
+    content: "\f00c";
+    background: #2780e3;
+    color: #fff;
+}
+.checkbox-custom:focus + .checkbox-custom-label, .radio-custom:focus + .radio-custom-label {
+  outline: 1px solid #ddd; /* focus style */
+}
 
 /* "Hamburger" menu */
-
 .lines-button-wrapper {
     position: relative;
     transition: 0.1s;
     z-index: 5;
 }
-
 .lines-button {
   transition: .3s;
   cursor: pointer;
