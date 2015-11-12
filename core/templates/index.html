@@ -157,9 +157,9 @@
                 $(".lines-button-wrapper").remove();
             }
             if ($("#sidebar-location-select").val() == "dining_halls") {
-                $("#sidebar-meal-select").show();
+                $("#sidebar-meal-select").parent().show();
             } else {
-                $("#sidebar-meal-select").hide();
+                $("#sidebar-meal-select").parent().hide();
             }
         });
         </script>
