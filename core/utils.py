@@ -78,6 +78,7 @@ def full_meal_name(meal):
         "Br": "Breakfast",
         "Lu": "Lunch",
         "Di": "Dinner",
+        "LN": "Late Night Grill",
         "LD": "Lunch & Dinner",
         "TM": "Today's Menu",
     }.get(meal, "No current meal")

@@ -9,6 +9,9 @@
         <!-- Ensure proper rendering on mobile devices, and disable zooming -->
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no">
 
+        <!-- Hide navbar if website is bookmarked on iOS home screen-->
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+
         <link rel="stylesheet" type="text/css" href="{% static "css/style.css" %}">
         <link rel="stylesheet" type="text/css" href="{% static "css/simple-sidebar.css" %}">
         <link rel="stylesheet" type="text/css" href="{% static "css/cosmo-theme.css" %}">
@@ -77,24 +80,49 @@
                     </button>
                 </div>
                 <div class="container">
-                    <div class="row">
-                        <div class="col-sm-12 col-md-8 col-md-offset-2">
-                            <div class="page-header">
-                                <h2>{{ meal_name }} on {{ date }}</h2>
+                    <div id="iOSModal" class="modal" role="dialog" aria-labelledby="Download the Vegan UConn mobile app for free.">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">
+                                        Download the Vegan UConn mobile app for free.
+                                    </h4>
+                                </div>
+                                <div class="modal-content">
+                                    <p>
+                                        To download this app for free, just tap
+                                        the share button below and choose "Add to Home Screen". The
+                                        app will then be installed as an icon on your home screen.
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    {% for categories_list in locations_list %}
-                        <div class="row">
-                            <div class="col-sm-12 col-md-8 col-md-offset-2">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        {% with categories_list|first as location_name %}{{ location_name|first }}{% endwith %}
-                                    </div>
-                                    <div class="panel-body">
-                                        <ul class="list-group">
+                    <div class="row page-header">
+                        <div class="col-sm-12 col-md-5 col-md-offset-2">
+                            <h2>{{ meal_name }} on {{ date }}</h2>
+                        </div>
+                        <div class="col-sm-12 col-md-3">
+                            <div id="search-container">
+                                <input class="form-control input-sm" type="text" id="search" data-list=".feedify-item-body" placeholder="Search">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-8 col-md-offset-2">
+                            <div class="feedify">
+                                {% for categories_list in locations_list %}
+                                    <div class="feedify-item">
+                                        <div class="feedify-item-header">
+                                            <h4>
+                                                {% with categories_list|first as location_name %}
+                                                    {{ location_name|first }}
+                                                {% endwith %}
+                                            </h4>
+                                        </div>
+                                        <ul class="list-group feedify-item-body">
                                             {% for foods_list in categories_list|slice:"1:" %}
-                                                <li class="list-group-item">
+                                                <li class="list-group-item ignore">
                                                     <b>
                                                         {% with foods_list|first as category %}{{ category }}{% endwith %}
                                                     </b>
@@ -118,50 +146,19 @@
                                                 {% endfor %}
                                             {% endfor %}
                                         </ul>
-                                    </div> <!-- /.panel-body -->
-                                </div> <!-- /.panel -->
-                            </div>
-                        </div> <!-- /.row -->
-                    {% endfor %}
+                                    </div> <!-- /.feedify-item -->
+                                {% endfor %}
+                            </div> <!-- /.feedify -->
+                        </div> <!-- ./col -->
+                    </div> <!-- /.row -->
                 </div> <!-- /.container -->
             </div> <!-- /#page-content-wrapper -->
         </div> <!-- /#wrapper -->
 
         <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-        <script>
-        $(".lines-button").click(function(e) {
-            e.preventDefault();
-            $(this).toggleClass("open");
-            setTimeout(function(){
-                $("#wrapper").toggleClass("toggled");
-            }, 300);
-        });
-        $(window).scroll(function(e) {
-            var scroll = $(window).scrollTop();
-            $(".lines-button-wrapper").css({"top": scroll + "px"});
-        });
-        $("#sidebar-location-select").change(function () {
-            if ($(this).val() == "dining_halls") {
-                $("#sidebar-meal-select").parent().slideDown();
-            } else {
-                $("#sidebar-meal-select").parent().slideUp();
-            }
-        });
-        $(document).ready(function() {
-            if ($(window).width() < 768) {
-                // make room for the menu button
-                $(".container").css({"padding-left": "60px"});
-            } else {
-                // hide the menu button
-                $(".lines-button-wrapper").remove();
-            }
-            if ($("#sidebar-location-select").val() == "dining_halls") {
-                $("#sidebar-meal-select").parent().show();
-            } else {
-                $("#sidebar-meal-select").parent().hide();
-            }
-        });
-        </script>
+        <script src="{% static "js/feedify.min.js" %}"></script>
+        <script src="{% static "js/jquery.hideseek.min.js" %}"></script>
+        <script src="{% static "js/scripts.js" %}"></script>
     </body>
 </html>
