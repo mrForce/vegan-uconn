@@ -27,6 +27,19 @@ body {
     position: absolute;
     bottom: 12px;
 }
+.ios-modal-arrow {
+    display: block;
+    text-align: center;
+    margin: 10px auto;
+}
+#iOSModal .modal-dialog {
+    width: 95%;
+    height: 92%;
+    padding: 0;
+}
+#iOSModal .modal-content {
+    height: 99%;
+}
 
 /* Sidebar */
 #husky-logo {

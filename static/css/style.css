@@ -1,7 +1,47 @@
 body {
     margin: 0;
 }
+.feedify-item-header {
+    background: white;
+    padding: 10px 0;
+    text-align: center;
+}
+.feedify-item-body {
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ccc;
+}
+.dish {
+    padding-left: 2em !important;
+}
+.description {
+    font-size: 0.9em;
+    font-style: italic;
+    color: rgba(0, 0, 0, 0.7);
+}
+#search-container {
+    position: relative;
+    height: 67px;
+    width: 100%;
+}
+#search {
+    position: absolute;
+    bottom: 12px;
+}
+.ios-modal-arrow {
+    display: block;
+    text-align: center;
+    margin: 10px auto;
+}
+#iOSModal .modal-dialog {
+    width: 95%;
+    height: 92%;
+    padding: 0;
+}
+#iOSModal .modal-content {
+    height: 99%;
+}
 
+/* Sidebar */
 #husky-logo {
     width: 100px;
     margin-left: 75px;
@@ -16,14 +56,6 @@ body {
 }
 .sidebar-form-entry {
     line-height: normal !important;
-}
-.dish {
-    padding-left: 2em !important;
-}
-.description {
-    font-size: 0.9em;
-    font-style: italic;
-    color: rgba(0, 0, 0, 0.7);
 }
 .sidebar-nav .btn {
     color: #cccccc;
@@ -84,9 +116,11 @@ body {
 
 /* "Hamburger" menu */
 .lines-button-wrapper {
-    position: relative;
-    transition: 0.1s;
-    z-index: 5;
+    position: fixed;
+    z-index: 200;
+    top: 15px;
+    left: 15px;
+    transition: 0.3s;
 }
 .lines-button {
   transition: .3s;
@@ -142,4 +176,20 @@ body {
 .lines-button.x.open .lines:after {
   -webkit-transform: rotate3d(0, 0, 1, -45deg);
   transform: rotate3d(0, 0, 1, -45deg);
+}
+
+/* Feedify */
+.feedify .feedify-item {
+  position: relative;
+}
+.feedify .feedify-item .feedify-item-header {
+  z-index: 100;
+}
+.feedify .feedify-item.fixed .feedify-item-header {
+  position: fixed;
+  top: 0;
+}
+.feedify .feedify-item.bottom .feedify-item-header {
+  position: absolute;
+  bottom: 0;
 }
