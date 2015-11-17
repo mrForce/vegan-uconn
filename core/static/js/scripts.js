@@ -1,4 +1,49 @@
-$(".lines-button").click(function(e) {
+$(document).ready(function() {
+    if ($(window).width() >= 768) {
+        // hide the menu button
+        $(".lines-button-wrapper").remove();
+    }
+    if ($("#sidebar-location-select").val() == "dining_halls") {
+        $("#sidebar-meal-select").parent().show();
+    } else {
+        $("#sidebar-meal-select").parent().hide();
+    }
+    /*
+    // Init iScroll
+    var myScroll;
+    setTimeout(function() {
+        myScroll = new IScroll('#scrollWrapper', {
+            probeType: 3,
+            mouseWheel: true,
+            tap: true,
+            scrollbars: true,
+            bounce: true
+        });
+    }, 300);
+    // Init feedify
+    $(function() {
+        $('.feedify').feedify();
+    });
+    */
+    // Init hideseek
+    $('#search').hideseek({
+        highlight: true,
+        ignore: ".ignore",
+    });
+    // check to see if iOS mobile app
+    /*
+    var isiPhone = navigator.userAgent.indexOf('iPhone') != -1
+    if (isiPhone && ("standalone" in window.navigator) && !window.navigator.standalone) {
+        // Init modal
+        $('#iOSModal').modal({ show: false});
+        // Show it
+        $('#iOSModal').modal('show');
+    }
+    */
+});
+
+// open/close the menu
+$('.lines-button').on('tap', function() {
     e.preventDefault();
     $(this).toggleClass("open");
     // if the sidebar was just opened
@@ -16,7 +61,8 @@ $(".lines-button").click(function(e) {
         $("#wrapper").toggleClass("toggled");
     }, 300);
 });
-$(".container").click(function(e) {
+// when the menu is open, tap the page to close the menu
+$('.container').on('tap', function() {
     // if the menu is open
     if ($("#wrapper").hasClass("toggled")) {
         // close the menu
@@ -27,6 +73,9 @@ $(".container").click(function(e) {
         }, 300);
     }
 });
+
+// Don't show breakfast/lunch/dinner/late night selection when looking at
+// dining halls
 $("#sidebar-location-select").change(function () {
     if ($(this).val() == "dining_halls") {
         $("#sidebar-meal-select").parent().slideDown();
@@ -34,6 +83,7 @@ $("#sidebar-location-select").change(function () {
         $("#sidebar-meal-select").parent().slideUp();
     }
 });
+
 // On search input
 $('#search').bind('input', function() {
     var value = $(this).val();
@@ -78,31 +128,5 @@ $('#search').bind('input', function() {
             "border-bottom": "1px solid #ccc"
         });
         $(".feedify-item-body > li").show();
-    }
-});
-$(document).ready(function() {
-    if ($(window).width() >= 768) {
-        // hide the menu button
-        $(".lines-button-wrapper").remove();
-    }
-    if ($("#sidebar-location-select").val() == "dining_halls") {
-        $("#sidebar-meal-select").parent().show();
-    } else {
-        $("#sidebar-meal-select").parent().hide();
-    }
-    $(function() {
-        $('.feedify').feedify();
-    });
-    $('#search').hideseek({
-        highlight: true,
-        ignore: ".ignore",
-    });
-    // check to see if iOS mobile app
-    var isiPhone = navigator.userAgent.indexOf('iPhone') != -1
-    if (isiPhone && ("standalone" in window.navigator) && !window.navigator.standalone) {
-        // Init modal
-        $('#iOSModal').modal({ show: false});
-        // Show it
-        $('#iOSModal').modal('show');
     }
 });
