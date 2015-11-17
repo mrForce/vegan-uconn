@@ -89,15 +89,20 @@ class Command(BaseCommand):
                     if dish.find_all("img", {"src": "LegendImages/nuts.gif"}):
                         contains_nuts = True
 
-                    Food.objects.get_or_create(name=dish_name,
-                                               category=category,
-                                               is_vegan=is_vegan,
-                                               is_gluten_free=is_gluten_free,
-                                               contains_nuts=contains_nuts,
-                                               date=date,
-                                               meal=meal_name,
-                                               location=location,
-                                               price=price)
+                    try:
+                        Food.objects.get_or_create(name=dish_name,
+                                                   category=category,
+                                                   is_vegan=is_vegan,
+                                                   is_gluten_free=is_gluten_free,
+                                                   contains_nuts=contains_nuts,
+                                                   date=date,
+                                                   meal=meal_name,
+                                                   location=location,
+                                                   price=price)
+                    except:
+                        print("Couldn't add Food \"" + str(dish_name) + "\" from " +
+                              "location \"" + str(location.name) + "\".")
+
         # Don't save dishes that have been removed
         dishes_now = Food.objects.filter(location=location, date=date)
         for d in dishes_before:
@@ -107,6 +112,7 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         count = Location.objects.count()
         done = 0
+        print(count*".", end="\r")
         for location in Location.objects.all():
             # scrape today's menus
             date = datetime.date.today()
@@ -120,9 +126,9 @@ class Command(BaseCommand):
             result = requests.get(location.url + time)
             soup = BeautifulSoup(result.content, "lxml")
             self.update_tables(self, soup, location, date)
+            done += 1
             out = done*"-" + (count-done)*"."
             print(out, end="\r")
-            done += 1
-        self.stdout.write("\n")
-        self.stdout.write(datetime.datetime.now().isoformat() +
-                          " Successfully updated menus.")
+        print("", end="\r")
+        self.stdout.write(" " + datetime.datetime.now().isoformat() +
+                          " Updated menus.")
