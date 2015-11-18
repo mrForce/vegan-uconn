@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load food_filters %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -80,90 +81,90 @@
                 </ul>
             </div> <!-- /#sidebar-wrapper -->
             <div id="page-content-wrapper">
-                <div class="lines-button-wrapper">
-                    <button type="button" aria-label="Toggle Navigation" class="lines-button x">
-                        <span class="lines"></span>
-                    </button>
-                </div>
-                <div id="scrollWrapper">
-                    <div class="container">
-                        <div id="iOSModal" class="modal" role="dialog" aria-labelledby="Download the Vegan UConn mobile app for free.">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                        <h4 class="modal-title">
-                                            Download the Vegan UConn mobile app for free.
-                                        </h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <p>
-                                            To download this app for free, just tap
-                                            the share button below and choose "Add to Home Screen".
-                                        </p>
-                                        <p>
-                                            The app will then be installed as an icon on your home screen.
-                                        </p>
-                                        <span class="ios-modal-arrow"><span class="glyphicon glyphicon-arrow-down"></span></span>
-                                    </div>
-                                </div>
+                <div id="top-header">
+                    <div class="lines-button-wrapper">
+                        <button type="button" aria-label="Toggle Navigation" class="lines-button x">
+                            <span class="lines"></span>
+                        </button>
+                    </div>
+                    <h4>{{ meal_name }} on {{ date }}</h4>
+                    {% comment %}
+                    <div class="col-sm-12 col-md-3">
+                        <div id="search-container">
+                            <input class="form-control input-sm" type="text" id="search" data-list=".feedify-item-body" placeholder="Search">
+                        </div>
+                    </div>
+                    {% endcomment %}
+                </div> <!-- /#top-header -->
+                <div id="iOSModal" class="modal fade" role="dialog" aria-labelledby="Download the Vegan UConn mobile app for free.">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title">
+                                    Get the app!
+                                </h4>
+                            </div>
+                            <div class="modal-body">
+                                <p>
+                                    To download this app for free, just tap
+                                    the share button below (<img alt="iOS share button" src="{% static "img/ios_share_button.png" %}">) and choose "Add to Home Screen".
+                                </p>
+                                <p>
+                                    The app will then be installed as an icon on your home screen.
+                                </p>
+                                <img alt="iOS add to home screen button" style="width: 90%" src="{% static "img/ios_add_to_home_screen.png" %}">
+                                <span class="ios-modal-arrow"><span class="glyphicon glyphicon-arrow-down"></span></span>
                             </div>
                         </div>
-                        <div class="row page-header">
-                            <div class="col-sm-12 col-md-5 col-md-offset-2">
-                                <h2>{{ meal_name }} on {{ date }}</h2>
-                            </div>
-                            <div class="col-sm-12 col-md-3">
-                                <div id="search-container">
-                                    <input class="form-control input-sm" type="text" id="search" data-list=".feedify-item-body" placeholder="Search">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12 col-md-8 col-md-offset-2">
-                                <div class="feedify">
-                                    {% for categories_list in locations_list %}
-                                        <div class="feedify-item">
-                                            <div class="feedify-item-header">
-                                                <h4>
-                                                    {% with categories_list|first as location_name %}
-                                                        {{ location_name|first }}
-                                                    {% endwith %}
-                                                </h4>
-                                            </div>
-                                            <ul class="list-group feedify-item-body">
-                                                {% for foods_list in categories_list|slice:"1:" %}
-                                                    <li class="list-group-item ignore">
-                                                        <b>
-                                                            {% with foods_list|first as category %}{{ category }}{% endwith %}
-                                                        </b>
+                    </div>
+                </div> <!-- /#iOSModal -->
+                <a id="iOS-modal-button" data-toggle="modal" data-target="#iOSModal" class="btn btn-default">Download the Vegan UConn app for free.</a>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-8 col-md-offset-2">
+                            <div class="feedify">
+                                {% for categories_list in locations_list %}
+                                    <div class="feedify-item">
+                                        <div class="feedify-item-header">
+                                            <h4>
+                                                {% with categories_list|first as location_name %}
+                                                    {{ location_name|first }}
+                                                {% endwith %}
+                                            </h4>
+                                        </div>
+                                        <ul class="list-group feedify-item-body">
+                                            {% for foods_list in categories_list|slice:"1:" %}
+                                                <li class="list-group-item ignore">
+                                                    <b>
+                                                        {% with foods_list|first as category %}{{ category }}{% endwith %}
+                                                    </b>
+                                                </li>
+                                                {% for food in foods_list|slice:"1:" %}
+                                                    <li class="list-group-item dish">
+                                                        {% if food.price and food.price.strip %}
+                                                            <span class="badge">${{ food.price }}</span>
+                                                        {% endif %}
+                                                        {% if food.is_gluten_free %}
+                                                            <span class="badge">GF</span>
+                                                        {% endif %}
+                                                        {% if food.contains_nuts %}
+                                                            <span class="badge">Contains nuts</span>
+                                                        {% endif %}
+                                                        {{ food | add_emoji }}
+                                                        {% if food.description %}
+                                                            <br /><span class="description">{{ food.description }}</span>
+                                                        {% endif %}
                                                     </li>
-                                                    {% for food in foods_list|slice:"1:" %}
-                                                        <li class="list-group-item dish">
-                                                            {% if food.price and food.price.strip %}
-                                                                <span class="badge">${{ food.price }}</span>
-                                                            {% endif %}
-                                                            {% if food.is_gluten_free %}
-                                                                <span class="badge">GF</span>
-                                                            {% endif %}
-                                                            {% if food.contains_nuts %}
-                                                                <span class="badge">Contains nuts</span>
-                                                            {% endif %}
-                                                            {{ food }}
-                                                            {% if food.description %}
-                                                                <br /><span class="description">{{ food.description }}</span>
-                                                            {% endif %}
-                                                        </li>
-                                                    {% endfor %}
                                                 {% endfor %}
-                                            </ul>
-                                        </div> <!-- /.feedify-item -->
-                                    {% endfor %}
-                                </div> <!-- /.feedify -->
-                            </div> <!-- ./col -->
-                        </div> <!-- /.row -->
-                    </div> <!-- /.container -->
-                </div> <!-- /#scroller -->
+                                            {% endfor %}
+                                        </ul>
+                                    </div> <!-- /.feedify-item -->
+                                {% endfor %}
+                            </div> <!-- /.feedify -->
+                        </div> <!-- ./col -->
+                    </div> <!-- /.row -->
+                </div> <!-- /.container -->
             </div> <!-- /#page-content-wrapper -->
         </div> <!-- /#wrapper -->
 
