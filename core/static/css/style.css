@@ -12,7 +12,7 @@ body {
     left: 0;
     height: 4em;
     background: white;
-    opacity: 0.95;
+    opacity: 0.85;
     z-index: 5;
     overflow: hidden;
     transition: 0.3s;
