@@ -30,8 +30,10 @@
             <!-- Sidebar -->
             <div id="sidebar-wrapper">
                 <ul class="sidebar-nav">
-                    <img id="husky-logo" alt="logo" src="{% static "img/logo.png" %}">
-                    <li id="sidebar-name"><h1>Vegan UConn</h1></li>
+                    <a href="/">
+                        <img id="husky-logo" alt="logo" src="{% static "img/logo.png" %}">
+                        <li id="sidebar-name"><h1>Vegan UConn</h1></li>
+                    </a>
                     {% block sidebar %}
                     {% endblock %}
                     <li>
