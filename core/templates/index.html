@@ -24,6 +24,10 @@
     </head>
     <body>
         <div id="wrapper">
+            <!-- Alert only shown if user sorts by location -->
+            <div id="getting-location-alert" class="alert alert-info" role="alert">
+                Getting your location...&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>
+            </div>
             <!-- Sidebar -->
             <div id="sidebar-wrapper">
                 <ul class="sidebar-nav">
@@ -54,6 +58,19 @@
                                     </option>
                                     <option value="LN"{% if meal == "LN" %} selected="selected"{% endif %}>
                                         Late Night
+                                    </option>
+                                </select>
+                            </div>
+                        </li>
+                        <li class="sidebar-form-entry">
+                            <div class="form-group">
+                                <label for="sidebar-sort-by">Sort by</label>
+                                <select id="sidebar-sort-by" name="sort" class="form-control sidebar-form-select">
+                                    <option value="num"{% if sort == "num" %} selected="selected"{% endif %}>
+                                        Number of vegan options
+                                    </option>
+                                    <option value="distance"{% if sort == "distance" %} selected="selected"{% endif %}>
+                                        Nearest
                                     </option>
                                 </select>
                             </div>
@@ -128,7 +145,10 @@
                                         <div class="feedify-item-header">
                                             <h4>
                                                 {% with categories_list|first as location_name %}
-                                                    {{ location_name|first }}
+                                                    {{ location_name.0 }}
+                                                    {% if sort == "distance" %}
+                                                    &nbsp;<span class="location-distance">({{ location_name.1 }} miles)</span>
+                                                    {% endif %}
                                                 {% endwith %}
                                             </h4>
                                         </div>

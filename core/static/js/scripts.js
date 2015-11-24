@@ -2,7 +2,7 @@ $(document).ready(function() {
     if ($(window).width() >= 768) {
         // hide the menu button
         $(".lines-button-wrapper").remove();
-        // move the header to the correct locatioh and center the text
+        // move the header to the correct location and center the text
         $("#top-header").css({
             "left": "250px",
             "width": "calc(100% - 250px)"
@@ -13,29 +13,6 @@ $(document).ready(function() {
     } else {
         $("#sidebar-meal-select").parent().hide();
     }
-    /*
-    // Init iScroll
-    var myScroll;
-    setTimeout(function() {
-        myScroll = new IScroll('#scrollWrapper', {
-            probeType: 3,
-            mouseWheel: true,
-            tap: true,
-            scrollbars: true,
-            bounce: true
-        });
-    }, 300);
-    // Init feedify
-    $(function() {
-        $('.feedify').feedify();
-    });
-    // Init hideseek
-    $('#search').hideseek({
-        highlight: true,
-        ignore: ".ignore",
-    });
-    */
-
     // check to see if iOS mobile app
     var isiPhone = navigator.userAgent.indexOf('iPhone') != -1
     if (isiPhone && ("standalone" in window.navigator) && !window.navigator.standalone) {
@@ -78,7 +55,6 @@ $('.container').click( function() {
         }, 300);
     }
 });
-
 // Don't show breakfast/lunch/dinner/late night selection when looking at
 // dining halls
 $("#sidebar-location-select").change(function () {
@@ -88,51 +64,46 @@ $("#sidebar-location-select").change(function () {
         $("#sidebar-meal-select").parent().slideUp();
     }
 });
-/*
-// On search input
-$('#search').bind('input', function() {
-    var value = $(this).val();
-    if (value.length >= 1 && value != "Search") {
-        // If there's a search query, use hideseek hidden mode and hide
-        // location names and padding
-        if (value.length == 1) {
-            $('#search').hideseek({
-                highlight: true,
-                ignore: ".ignore",
-                hidden_mode: true
-            });
-            $(".feedify-item-header").hide();
-            $(".feedify-item-body").css({
-                "padding-bottom": "0",
-                "border-bottom": "none"
-            });
+function insertParam(key, value, url) {
+    key = encodeURIComponent(key); value = encodeURIComponent(value);
+
+    if (!url) {
+        url = document.location.search;
+    }
+    var kvp = url.substr(1).split('&');
+    if (kvp == '') {
+        return '?' + key + '=' + value;
+    }
+    else {
+        var i = kvp.length; var x; while (i--) {
+            x = kvp[i].split('=');
+            if (x[0] == key) {
+                x[1] = value;
+                kvp[i] = x.join('=');
+                break;
+            }
         }
-        // if something is found, show the location name
-        setTimeout(function(){
-            $(".feedify-item-body").each(function() {
-                if ($(this).children("li:visible").length > 0) {
-                    $(this).closest(".feedify-item").children(".feedify-item-header").slideDown();
-                }
-            });
-            $(".feedify-item-body").each(function() {
-                if ($(this).children("li:visible").length == 0) {
-                    $(this).closest(".feedify-item").children(".feedify-item-header").slideUp();
-                }
-            });
-        }, 600);
-    } else {
-        // if there's no search query, show everything again
-        $('#search').hideseek({
-            highlight: true,
-            ignore: ".ignore",
-            hidden_mode: false
-        });
-        $(".feedify-item-header").show();
-        $(".feedify-item-body").css({
-            "padding-bottom": "20px",
-            "border-bottom": "1px solid #ccc"
-        });
-        $(".feedify-item-body > li").show();
+        if (i < 0) { kvp[kvp.length] = [key, value].join('='); }
+        return "?" + kvp.join('&');
+    }
+};
+// Get user's location
+$("#sidebar-sort-by").change(function() {
+    if ($(this).val() == "distance") {
+        if (navigator.geolocation) {
+            try {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    $("#getting-location-alert").slideDown();
+                    newURL = insertParam("pos", position.coords.latitude + "and" + position.coords.longitude);
+                    newURL = insertParam("sort", "distance", newURL);
+                    location.assign(newURL);
+                });
+            }
+            catch(err) {
+                alert("Could not get location: " + err);
+            }
+        } else {
+            alert("Sorry, geolocation isn't supported by your browser.");
+        }
     }
 });
-*/

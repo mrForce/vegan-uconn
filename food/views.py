@@ -1,15 +1,16 @@
 from datetime import time, datetime, timedelta
+from decimal import *
 
 from django.shortcuts import render_to_response
 from django.utils import timezone
 
 from locations.models import Location
 from food.models import Food
-from core.utils import current_meal_type, next_meal_type, current_or_next_meal, full_meal_name
-
+import core.utils
 
 def index(request):
     # TODO: add ability to sort by distance
+    # TODO: make sure entrees are always first
     # create a list of lists of lists in the format
     # [                                                 locations_list
     #   ["Place name 1",                                categories_list
@@ -29,9 +30,18 @@ def index(request):
     hide_nuts = True if request.GET.get('hide_nuts', '') else False
     hide_gluten = True if request.GET.get('hide_gluten', '') else False
     location_type = request.GET.get('location_type', '')
+    pos = request.GET.get('pos', '')
+    if pos and not request.GET.get('sort', '') == "num":
+        sort = "distance"
+    else:
+        sort = "num"
+    if sort == "distance":
+        location = request.GET.get('pos', '').split("and")
+        latitude = Decimal(location[0])
+        longitude = Decimal(location[1])
     meal = request.GET.get('meal', '')
     if not meal:
-        meal = current_or_next_meal()  # If no meal is specified
+        meal = core.utils.current_or_next_meal()  # If no meal is specified
 
     # If we passed today's meal, show tomorrow's
     weekday = datetime.now().isoweekday()
@@ -73,7 +83,7 @@ def index(request):
         show_dining_halls = True
         location_type = "dining_halls"
 
-    # Get foods from relevant locations
+    # Get foods from relevant Locations
     for l in ls:
         foods = Food.objects.filter(date=date)\
                             .filter(meal=meal)\
@@ -85,8 +95,9 @@ def index(request):
             foods = foods.filter(is_gluten_free=True)
         if foods.count() > 0:
             categories = foods.values_list("category", flat=True).distinct()
-            # 1st entry here is a list of the location name and its rating
-            # (how many vegan options there are where entrees count for 2)
+            # 1st entry here is a list of the location name and, depending
+            # on sorting, either its rating (number of vegan options) or its
+            # distance from the user
             categories_list = [[l.name, 0]]
 
             for category in categories:
@@ -94,18 +105,27 @@ def index(request):
                 foods_list = [category] + \
                              [f for f in foods.filter(category=category)]
                 categories_list.append(foods_list)
-                categories_list[0][1] += (len(foods_list) - 1)
+                if sort == "num":
+                    categories_list[0][1] += (len(foods_list) - 1)
+
+            if sort == "distance":
+                categories_list[0][1] = \
+                    round(core.utils.distance_on_unit_sphere(
+                        l.latitude, l.longitude, latitude, longitude
+                    ), 2)
             locations_list.append(categories_list)
 
     locations_list.sort(key=lambda x: x[0][1])
-    locations_list.reverse()
+    if sort == "num":
+        locations_list.reverse()
 
     return render_to_response("index.html",
                               {"locations_list": locations_list,
-                               "meal_name": full_meal_name(meal),
+                               "meal_name": core.utils.full_meal_name(meal),
                                "date": date.date(),
                                "hide_nuts": hide_nuts,
                                "hide_gluten": hide_gluten,
                                "meal": meal,
                                "location_type": location_type,
+                               "sort": sort
                                })

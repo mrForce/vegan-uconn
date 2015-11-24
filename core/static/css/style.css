@@ -1,7 +1,6 @@
 html {
     -webkit-text-size-adjust: 100%;
 }
-
 body {
     margin: 0;
 }
@@ -48,6 +47,9 @@ body {
     font-style: italic;
     color: rgba(0, 0, 0, 0.7);
 }
+.location-distance {
+    font-size: 0.8em;
+}
 #search-container {
     position: relative;
     height: 67px;
@@ -83,8 +85,31 @@ body {
 #page-content-wrapper {
     padding: 0 !important; /* override sidebar css */
 }
+#getting-location-alert {
+    display: none;
+    position: fixed;
+    top: 5px;
+    left: 5px;
+    width: 95%;
+    z-index: 1000;
+}
+.glyphicon-refresh-animate {
+    -animation: spin .7s infinite linear;
+    -webkit-animation: spin2 .7s infinite linear;
+}
+@-webkit-keyframes spin2 {
+    from { -webkit-transform: rotate(0deg);}
+    to { -webkit-transform: rotate(360deg);}
+}
+@keyframes spin {
+    from { transform: scale(1) rotate(0deg);}
+    to { transform: scale(1) rotate(360deg);}
+}
 
 /* Sidebar */
+#sidebar-wrapper {
+    top: 0;
+}
 #husky-logo {
     width: 100px;
     margin-left: 75px;
