@@ -1,0 +1,95 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Vegan UConn</title>
+
+        <link rel="stylesheet" href="{% static "css/bootstrap.min.css" %}">
+        <link rel="stylesheet" type="text/css" href="{% static "css/style.css" %}">
+        <link rel="stylesheet" type="text/css" href="{% static "css/simple-sidebar.css" %}">
+        <link rel="stylesheet" type="text/css" href="{% static "css/cosmo-theme.css" %}">
+
+        <!-- Ensure proper rendering on mobile devices, and disable zooming -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no">
+
+        <!-- Hide navbar if website is bookmarked on iOS home screen-->
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+
+        <!-- iOS icons -->
+        <link rel="apple-touch-icon-precomposed" sizes="57x57" href="{% static "img/ios-icon-57.png" %}"/>
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{% static "img/ios-icon-114.png" %}"/>
+        <link rel="apple-touch-icon-precomposed" sizes="120x120" href="{% static "img/ios-icon-120.png" %}"/>
+
+    </head>
+    <body>
+        <div id="wrapper">
+            <!-- Alert only shown if user sorts by location -->
+            <div id="getting-location-alert" class="alert alert-info" role="alert">
+                Getting your location...&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>
+            </div>
+            <!-- Sidebar -->
+            <div id="sidebar-wrapper">
+                <ul class="sidebar-nav">
+                    <img id="husky-logo" alt="logo" src="{% static "img/logo.png" %}">
+                    <li id="sidebar-name"><h1>Vegan UConn</h1></li>
+                    {% block sidebar %}
+                    {% endblock %}
+                    <li>
+                        <a href="#">About</a>
+                    </li>
+                    <li>
+                        <a href="#">Get involved</a>
+                    </li>
+                    <li>
+                        <a href="http://vegankit.com/why" target="_blank">Why veganism?</a>
+                    </li>
+                    <li>
+                        <a href="#">Statistics</a>
+                    </li>
+                </ul>
+            </div> <!-- /#sidebar-wrapper -->
+            <div id="page-content-wrapper">
+                <div id="top-header">
+                    <div class="lines-button-wrapper">
+                        <button type="button" aria-label="Toggle Navigation" class="lines-button x">
+                            <span class="lines"></span>
+                        </button>
+                    </div>
+                    <h4>{{ meal_name }} on {{ date }}</h4>
+                </div> <!-- /#top-header -->
+                <div id="iOSModal" class="modal fade" role="dialog" aria-labelledby="Download the Vegan UConn mobile app for free.">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title">
+                                    Get the app!
+                                </h4>
+                            </div>
+                            <div class="modal-body">
+                                <p>
+                                    To download this app for free, just tap
+                                    the share button below (<img alt="iOS share button" src="{% static "img/ios_share_button.PNG" %}">) and choose "Add to Home Screen".
+                                </p>
+                                <p>
+                                    The app will then be installed as an icon on your home screen.
+                                </p>
+                                <img alt="iOS add to home screen button" style="width: 90%" src="{% static "img/ios_add_to_home_screen.PNG" %}">
+                                <span class="ios-modal-arrow"><span class="glyphicon glyphicon-arrow-down"></span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- /#iOSModal -->
+                <a id="iOS-modal-button" data-toggle="modal" data-target="#iOSModal" class="btn btn-default">Download the Vegan UConn app for free.</a>
+                <div class="container">
+                    {% block main %}
+                    {% endblock %}
+                </div> <!-- /.container -->
+            </div> <!-- /#page-content-wrapper -->
+        </div> <!-- /#wrapper -->
+
+        <script src="{% static "js/jquery-2.1.4.min.js" %}"></script>
+        <script src="{% static "js/bootstrap.min.js" %}"></script>
+        <script src="{% static "js/scripts.js" %}"></script>
+    </body>
+</html>

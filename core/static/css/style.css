@@ -27,18 +27,6 @@ body {
 .container {
     margin-top: 4em;
 }
-.feedify-item-header {
-    background: white;
-    padding: 10px 0;
-    text-align: center;
-}
-.feedify-item-body {
-    padding-bottom: 20px;
-    border-bottom: 1px solid #ccc;
-}
-.feedify {
-    width: 100%;
-}
 .dish {
     padding-left: 2em !important;
 }
@@ -47,17 +35,19 @@ body {
     font-style: italic;
     color: rgba(0, 0, 0, 0.7);
 }
+.location-name {
+    text-align: center;
+    margin: 2.5em auto 0.5em auto;
+    font-size: 1.2em;
+    color: black;
+}
 .location-distance {
     font-size: 0.8em;
 }
-#search-container {
-    position: relative;
-    height: 67px;
-    width: 100%;
-}
-#search {
-    position: absolute;
-    bottom: 12px;
+.list-group {
+    padding-bottom: 2.5em;
+    border-bottom: 1px solid #d6d6d6;
+
 }
 #iOS-modal-button {
     position: fixed;
@@ -244,20 +234,4 @@ body {
 .lines-button.x.open .lines:after {
   -webkit-transform: rotate3d(0, 0, 1, -45deg);
   transform: rotate3d(0, 0, 1, -45deg);
-}
-
-/* Feedify */
-.feedify .feedify-item {
-  position: relative;
-}
-.feedify .feedify-item .feedify-item-header {
-  z-index: 100;
-}
-.feedify .feedify-item.fixed .feedify-item-header {
-  position: fixed;
-  top: 0;
-}
-.feedify .feedify-item.bottom .feedify-item-header {
-  position: absolute;
-  bottom: 0;
 }
