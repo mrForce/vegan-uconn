@@ -1,3 +1,5 @@
+from django.views.generic import TemplateView
+
 from food import views as food_views
 
 """vegan_uconn URL Configuration
@@ -20,5 +22,7 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^', food_views.index, name="index")
+    url(r'^$', food_views.index, name="index"),
+    url(r'^about/', TemplateView.as_view(template_name="about.html")),
+    url(r'^getinvolved/', TemplateView.as_view(template_name="getinvolved.html"))
 ]

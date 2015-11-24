@@ -35,10 +35,10 @@
                     {% block sidebar %}
                     {% endblock %}
                     <li>
-                        <a href="#">About</a>
+                        <a href="/about">About</a>
                     </li>
                     <li>
-                        <a href="#">Get involved</a>
+                        <a href="/getinvolved">Get involved</a>
                     </li>
                     <li>
                         <a href="http://vegankit.com/why" target="_blank">Why veganism?</a>
@@ -55,7 +55,8 @@
                             <span class="lines"></span>
                         </button>
                     </div>
-                    <h4>{{ meal_name }} on {{ date }}</h4>
+                    {% block header %}
+                    {% endblock %}
                 </div> <!-- /#top-header -->
                 <div id="iOSModal" class="modal fade" role="dialog" aria-labelledby="Download the Vegan UConn mobile app for free.">
                     <div class="modal-dialog modal-lg">
