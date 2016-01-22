@@ -23,6 +23,7 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', food_views.index, name="index"),
+#    url(r'^api/v1/', include(api_v1_urls)),
     url(r'^about/', TemplateView.as_view(template_name="about.html")),
     url(r'^getinvolved/', TemplateView.as_view(template_name="getinvolved.html"))
 ]
