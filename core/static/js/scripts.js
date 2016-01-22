@@ -96,6 +96,7 @@ $("#sidebar-sort-by").change(function() {
                     $("#getting-location-alert").slideDown();
                     newURL = insertParam("pos", position.coords.latitude + "and" + position.coords.longitude);
                     newURL = insertParam("sort", "distance", newURL);
+                    _paq.push(['trackGoal', 2]);
                     location.assign(newURL);
                 });
             }
