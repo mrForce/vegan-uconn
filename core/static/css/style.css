@@ -24,6 +24,12 @@ body {
     margin: 0 auto;
     line-height: 4em;
 }
+.sidebar-form-entry label {
+    color: #ccc;
+}
+.sidebar-nav li a {
+    color: #ccc !important;
+}
 .container {
     margin-top: 4em;
 }

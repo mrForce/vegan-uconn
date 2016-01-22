@@ -1,18 +1,37 @@
 html {
     -webkit-text-size-adjust: 100%;
 }
-
 body {
     margin: 0;
 }
-.feedify-item-header {
+#top-header {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    height: 4em;
     background: white;
-    padding: 10px 0;
+    opacity: 0.85;
+    z-index: 5;
+    overflow: hidden;
+    transition: 0.3s;
+    box-shadow: 0 1px 0 rgba(0,0,0,.1),0 1px 2px rgba(0,0,0,.1);
     text-align: center;
+    padding: 0.6em 0;
 }
-.feedify-item-body {
-    padding-bottom: 20px;
-    border-bottom: 1px solid #ccc;
+#top-header h3 {
+    opacity: 1;
+    margin: 0 auto;
+    line-height: 4em;
+}
+.sidebar-form-entry label {
+    color: #ccc;
+}
+.sidebar-nav li a {
+    color: #ccc !important;
+}
+.container {
+    margin-top: 4em;
 }
 .dish {
     padding-left: 2em !important;
@@ -22,19 +41,34 @@ body {
     font-style: italic;
     color: rgba(0, 0, 0, 0.7);
 }
-#search-container {
-    position: relative;
-    height: 67px;
-    width: 100%;
+.location-name {
+    text-align: center;
+    margin: 2.5em auto 0.5em auto;
+    font-size: 1.2em;
+    color: black;
 }
-#search {
-    position: absolute;
-    bottom: 12px;
+.location-distance {
+    font-size: 0.8em;
+}
+.list-group {
+    padding-bottom: 2.5em;
+    border-bottom: 1px solid #d6d6d6;
+
+}
+#iOS-modal-button {
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    z-index: 5;
+    display: none; /* shown by JS on iOS devices */
 }
 .ios-modal-arrow {
     display: block;
     text-align: center;
     margin: 10px auto;
+}
+#iOSModal {
+    display: none;
 }
 #iOSModal .modal-dialog {
     width: 95%;
@@ -44,8 +78,37 @@ body {
 #iOSModal .modal-content {
     height: 99%;
 }
+#page-content-wrapper {
+    padding: 0 !important; /* override sidebar css */
+}
+#getting-location-alert {
+    display: none;
+    position: fixed;
+    top: 5px;
+    left: 5px;
+    width: 95%;
+    z-index: 1000;
+}
+.glyphicon-refresh-animate {
+    -animation: spin .7s infinite linear;
+    -webkit-animation: spin2 .7s infinite linear;
+}
+@-webkit-keyframes spin2 {
+    from { -webkit-transform: rotate(0deg);}
+    to { -webkit-transform: rotate(360deg);}
+}
+@keyframes spin {
+    from { transform: scale(1) rotate(0deg);}
+    to { transform: scale(1) rotate(360deg);}
+}
+#staticpage {
+    margin-top: 2em;
+}
 
 /* Sidebar */
+#sidebar-wrapper {
+    top: 0;
+}
 #husky-logo {
     width: 100px;
     margin-left: 75px;
@@ -54,6 +117,9 @@ body {
 #sidebar-name {
     color: white;
     margin-bottom: 40px;
+}
+.sidebar-nav a:hover {
+    text-decoration: none;
 }
 .sidebar-nav > form {
     margin-bottom: 30px;
@@ -118,12 +184,12 @@ body {
   outline: 1px solid #ddd; /* focus style */
 }
 
-/* "Hamburger" menu */
+/* "Hamburger" menu button */
 .lines-button-wrapper {
     position: fixed;
     z-index: 200;
     top: 15px;
-    left: 15px;
+    left: 0px;
     transition: 0.3s;
 }
 .lines-button {
@@ -180,20 +246,4 @@ body {
 .lines-button.x.open .lines:after {
   -webkit-transform: rotate3d(0, 0, 1, -45deg);
   transform: rotate3d(0, 0, 1, -45deg);
-}
-
-/* Feedify */
-.feedify .feedify-item {
-  position: relative;
-}
-.feedify .feedify-item .feedify-item-header {
-  z-index: 100;
-}
-.feedify .feedify-item.fixed .feedify-item-header {
-  position: fixed;
-  top: 0;
-}
-.feedify .feedify-item.bottom .feedify-item-header {
-  position: absolute;
-  bottom: 0;
 }
