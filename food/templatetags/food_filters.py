@@ -15,7 +15,7 @@ def add_emoji(value):
         "donut": "doughnut",
         "doughnut": "doughnut",
         "apple": "apple",
-        "cherry": "cherry",
+        "cherry": "cherries",
         "peach": "peach",
         "corn": "corn",
         "pineapple": "pineapple",
