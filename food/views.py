@@ -9,18 +9,19 @@ from food.models import Food
 import core.utils
 
 def index(request):
-    # TODO: add ability to sort by distance
     # TODO: make sure entrees are always first
     # create a list of lists of lists in the format
     # [                                                 locations_list
-    #   ["Place name 1",                                categories_list
-    #      ["Entrees", entree_1, ..., entree_n],        foods_list
-    #      ["Sides", side_1, ..., side_n]               foods_list
-    #   ],
-    #   ["Place name 2",                                categories_list
+    #   [
+    #     ["Place name 1", rank]                        categories_list
+    #       ["Entrees", entree_1, ..., entree_n],       foods_list
+    #       ["Sides", side_1, ..., side_n]              foods_list
+    #     ],
+    #   [
+    #     ["Place name 2", rank]                        categories_list
     #       ["Entrees", entree_1, ..., entree_n],       foods_list
     #       ["Desserts", dessert_1, ..., dessert_n]     foods_list
-    #   ],
+    #     ],
     #   etc.
     # ]
     locations_list = []
@@ -119,6 +120,14 @@ def index(request):
     locations_list.sort(key=lambda x: x[0][1])
     if sort == "num":
         locations_list.reverse()
+        # Freshens tends to have a lot of smoothie options, which gets it
+        # listed first. However, since they're smoothies and not actual dishes,
+        # it makes more sense to list it last - this is a better UX.
+        for l in locations_list:
+            if l[0][0] == 'Freshens':
+                locations_list.remove(l)
+                locations_list.append(l)
+                break
 
     return render_to_response("index.html",
                               {"locations_list": locations_list,
