@@ -77,6 +77,7 @@ def index(request):
     # Get the Location query
     if location_type == "cafes_restaurants":
         ls = Location.objects.filter(is_dining_hall=False)
+        meal = "TM"
     else:
         ls = Location.objects.filter(is_dining_hall=True)
         location_type = "dining_halls"
