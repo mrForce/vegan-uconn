@@ -19,7 +19,8 @@ class Command(BaseCommand):
             "Dinner": "Di",
             "Lunch & Dinner": "LD",
             "Today's Menu": "TM",
-            "TODAY'S MENU": "TM"
+            "TODAY'S MENU": "TM",
+            "TODAYS MENU": "TM"
         }.get(meal, "No")
 
     @staticmethod

@@ -75,20 +75,21 @@ def index(request):
 
     # Get the Location query
     if location_type == "cafes_restaurants":
-        print("yes")
         ls = Location.objects.filter(is_dining_hall=False)
-        meal = "TM"  # Cafes and restaurants only have one "meal": TM
     else:
         ls = Location.objects.filter(is_dining_hall=True)
-        show_dining_halls = True
         location_type = "dining_halls"
 
     # Get foods from relevant Locations
     for l in ls:
         foods = Food.objects.filter(date=date)\
-                            .filter(meal=meal)\
                             .filter(is_vegan=True)\
                             .filter(location=l)
+        if location_type == "dining_halls":
+            foods = foods.filter(meal=meal)
+            # if the user requested cafes and restaurants, we don't filter
+            # by meal - because they don't have one, they sell the same
+            # things all day
         if hide_nuts:
             foods = foods.filter(contains_nuts=False)
         if hide_gluten:
